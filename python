@@ -1,0 +1,127 @@
+#Calculo da Zona de Fresnel e Delta da Altura
+import math
+import time
+
+def scale_distance(d, d1, d2):
+    # Encontar a menor magnitude entre os valores
+    min_distance = min(d, d1, d2)
+
+    # Determinar a escala de 10 e aplica-la baseado na menor distância
+    if min_distance >= 1e5:
+        scale = 1e5  # Escala de 1e5 para distâncias maior que ou igual a 100 km
+        unit = "10^5 km"
+    elif min_distance >= 1e4:
+        scale = 1e4  # Escala de 1e4 para distâncias maior que ou igual a 10 km
+        unit = "10^4 km"
+    elif min_distance >= 1e3:
+        scale = 1e3  # Escala de 1e3 para distâncias maior que ou igual a 1 km
+        unit = "km"
+    else:
+        scale = 1  # Sem escala para distâncias menores que 1 km
+        unit = "m"
+
+    # Retorna os valores em escala com unidade de medida
+    return d / scale, d1 / scale, d2 / scale, unit
+
+print("Calculo da Zona de Fresnel e Delta da Altura")
+print("Informe os dados solicitado em metros.")
+
+d = int(input("Informe a distância d: "))
+d1 = int(input("Informe a distância d1: "))
+d2 = int(input("Informe a distância d2: "))
+h0 = int(input("Informe a altura h0: "))
+h1 = int(input("Informe a altura h1: "))
+h2 = int(input("Informe a altura h2: "))
+K = 1
+R = 6.37e6
+print("")
+
+print("Delta da Altura")
+print(f"Δh = {h1} - ({d1}/{d}) * ({h1}-{h2}) - ({d1}*{d2})/(2*{K}*{R}) - {h0}")
+print("")
+time.sleep(1)
+
+# Fazendo o calculo passo a passo
+step1 = (d1 / d)
+print(f"Passo 1: ({d1} / {d})= {step1:.4f}")
+
+step2 = (h1 - h2)
+print(f"Passo 2: ({h1} - {h2})= {step2}")
+
+step3 = (d1 * d2)
+print(f"Passo 3: ({d1} * {d2})= {step3}")
+
+step4 = (2 * K * R)
+print(f"Passo 4: (2 * {K} * {R}) = {step4}")
+print("")
+time.sleep(2)
+
+print(f"Δh = {h1} - ({step1:.4f})*({step2})-({step3})/({step4}) - {h0}")
+print("")
+time.sleep(2)
+
+step5 = (step1 * step2)
+print(f"Passo 5: {step1:.4f}*{step2} = {step5}")
+
+step6 = (step3 / step4)
+print(f"Passo 6: {step3}/{step4} = {step6:4f}")
+print("")
+time.sleep(2)
+
+print(f"Δh = {h1} - ({step5:.4f})-({step6:4f}) - {h0}")
+print("")
+time.sleep(2)
+
+step7 = (h1 - step5 - step6 - h0)
+print(f"Passo 7: {h1} - {step5:.4f} - {step6:4f} - {h0} = {step7:.3f}")
+print("")
+time.sleep(2)
+
+# Resultado final
+Δh = step7
+print(f"Δh = {Δh:.3f}")
+print()
+time.sleep(3)
+
+f= 2.4
+scaled_d, scaled_d1, scaled_d2, unit = scale_distance(d, d1, d2)
+r0 = 17.29 * math.sqrt(d1 * d2 / d * f)
+print("Zona de Fresnel")
+print(f"r0 = 17,29 * √({scaled_d1:.2f} {unit} * {scaled_d2:.2f} {unit} / ({scaled_d:.2f} {unit} * {f})")
+print("")
+time.sleep(2)
+
+step8 = (scaled_d1 * scaled_d2)
+print(f"Passo 1: ({scaled_d1:.2f} {unit} * {scaled_d2:.2f} {unit}) = {step8:.2f}")
+
+step9 = (scaled_d * f)
+print(f"Passo 2: ({scaled_d:.2f} {unit} * {f}) = {step9:.2f}")
+print("")
+time.sleep(2)
+
+print(f"r0 = 17,29 * √({step8:.2f}/{step9:.2f})")
+print("")
+time.sleep(2)
+
+step10 = (step8 / step9)
+print(f"Passo 3: {step8:.2f} / {step9:.2f} = {step10:.4f}")
+print("")
+
+print(f"r0 = 17,29 * √({step10:.4f})")
+print("")
+time.sleep(2)
+
+step11 = (math.sqrt(step10))
+print(f"Passo 4: √{step10:.4f} = {step11:.5f}")
+print("")
+
+print(f"r0 = 17,29 * {step11:.5f}")
+print("")
+time.sleep(2)
+
+step12 = (17.29 * step11)
+print(f"Passo 3: 17,29 * {step11:.5f} = {step12:.2f}")
+print("")
+
+r0 = step12
+print(f"r0 = {r0:.2f}")
